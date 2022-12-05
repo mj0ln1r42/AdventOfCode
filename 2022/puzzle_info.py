@@ -5,7 +5,7 @@ from pathlib import Path
 
 class PuzzleInfo():
     def __init__(self, arg_parser = ArgumentParser()):
-        *_, callsite = filter(lambda frame: "AdventOfCode" in frame.filename, inspect.stack())
+        callsite = [frame for frame in inspect.stack() if "AdventOfCode" in frame.filename][-1]
         input_file = Path('inputs') / f'{Path(callsite.filename).stem}.txt'
 
         self._day_num = re.search(r'[^\d]*(\d[^\.]*)', input_file.stem).group(1)
@@ -29,4 +29,4 @@ class PuzzleInfo():
 
         print(f'reading {self.args.filename}...')
         with open(self.args.filename) as f:
-            self.input_lines = f.readlines()
+            self.input_lines = f.read().splitlines()
